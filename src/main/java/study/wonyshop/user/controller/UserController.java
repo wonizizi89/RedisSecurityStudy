@@ -96,11 +96,16 @@ public class UserController {
     return jwtProvider.reissueAtk(user.getEmail(),user.getRole(), tokenRequest.getRefreshToken());
   }
 
-  @GetMapping("/{id}")
-  public UserResponse getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails,
-      @PathVariable Long id){
-    return userService.getUserInfo(userDetails.getUsername(),id);
+  /**
+   * 해당 유저 정보 조회
+   * @param userDetails
+   * @return
+   */
+  @GetMapping("/user-info")
+  public UserResponse getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    return userService.getUserInfo(userDetails.getUser().getEmail());
   }
+
 
 
 }

@@ -99,10 +99,12 @@ public class UserService {
     return ResponseEntity.ok("로그아웃 완료");
   }
 
-  public UserResponse getUserInfo(String email, Long id) {
-   User findUser = userRepository.findById(id).orElseThrow(
+
+  public UserResponse getUserInfo(String email) {
+    User findUser = userRepository.findByEmail(email).orElseThrow(
         () -> new IllegalArgumentException("없음 "));
     return UserResponse.of(findUser);
   }
+
 }
 
