@@ -2,12 +2,15 @@ package study.wonyshop.security.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import study.wonyshop.user.entity.User;
 import study.wonyshop.user.entity.UserRoleEnum;
-
+@Getter
+@NoArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
   private User user;
