@@ -107,6 +107,8 @@ public class UserController {
     //return userService.getUserInfo(userDetails.getUser().getEmail());
   }
 
+// 1. 유저 머니 충전하기
+  //2. 유저 머니 지불하기
 
 
 }

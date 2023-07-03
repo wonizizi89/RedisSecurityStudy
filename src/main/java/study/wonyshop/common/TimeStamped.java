@@ -20,12 +20,12 @@ public class TimeStamped {
   @JsonSerialize(using = LocalDateTimeSerializer.class)
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)
   @CreatedDate
-  private LocalDateTime createdAt;
+  private LocalDateTime createdDate;
 
 
   @JsonSerialize(using = LocalDateTimeSerializer.class)
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)
   @LastModifiedDate
-  private LocalDateTime modifiedAt;
+  private LocalDateTime modifiedDate;
 
 }

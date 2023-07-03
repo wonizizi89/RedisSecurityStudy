@@ -15,7 +15,10 @@ public enum ExceptionStatus {
 
   WRONG_PASSWORD(400, "잘못된 비밀번호 입니다."),
   AUTHENTICATION(500, "인증 실패"),
-  WRONG_PROFILE(404, "프로필이 존재하지 않습니다.");
+  WRONG_PROFILE(404, "프로필이 존재하지 않습니다."),
+
+  NOT_EXIST (400, "존재하지 않습니다."),
+  WRONG_USER_T0_CONTACT(403,"다른 유저의 게시글에는 접근 할 수 없습니다.");
 
   private final int StatusCode;
   private final String message;

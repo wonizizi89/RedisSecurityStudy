@@ -3,6 +3,7 @@ package study.wonyshop.user.dto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import study.wonyshop.delivery.Address;
 import study.wonyshop.user.entity.User;
 import study.wonyshop.user.entity.UserRoleEnum;
 
@@ -14,7 +15,7 @@ public class UserResponse {
   private final String nickname;
   private final String phoneNumber;
   private final UserRoleEnum role;
-  private final String address;
+  private final Address address;
   private final String profileImage;
 
   /**

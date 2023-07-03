@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import study.wonyshop.delivery.Address;
 import study.wonyshop.user.entity.User;
 import study.wonyshop.user.entity.UserRoleEnum;
 
@@ -33,7 +34,7 @@ public class SignUpRequest {
   private final String phoneNumber;
 
   @NotBlank
-  private final String address;
+  private final Address address;
 
 //  private boolean admin = false;
 //
@@ -41,7 +42,7 @@ public class SignUpRequest {
 
   @Builder
   public SignUpRequest(String email, String nickName, String password, String password2,
-      String phoneNumber, String address) {
+      String phoneNumber, Address address) {
     this.email = email;
     this.nickName = nickName;
     this.password = password;

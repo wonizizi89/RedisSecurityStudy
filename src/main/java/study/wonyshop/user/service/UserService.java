@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.wonyshop.common.exception.CustomException;
 import study.wonyshop.common.exception.ExceptionStatus;
+import study.wonyshop.delivery.Address;
 import study.wonyshop.redis.CacheNames;
 import study.wonyshop.redis.RedisDao;
 import study.wonyshop.security.jwt.JwtProvider;
@@ -43,7 +44,7 @@ public class UserService {
     String nickname = signUpRequest.getNickName();
     String password = passwordEncoder.encode(signUpRequest.getPassword());
     String phoneNumber = signUpRequest.getPhoneNumber();
-    String address = signUpRequest.getAddress();
+    Address address = signUpRequest.getAddress();
 
     //닉네임 중복 확인
     Optional<User> findNickname = userRepository.findByNickname(nickname);
