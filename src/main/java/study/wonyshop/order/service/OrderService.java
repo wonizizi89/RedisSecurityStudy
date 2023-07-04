@@ -4,6 +4,7 @@ package study.wonyshop.order.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
@@ -67,6 +68,20 @@ public class OrderService {
     user.refundPayment(order.getTotalPrice());
     userRepository.save(user);
     return ResponseEntity.ok("주문 취소 완료 ");
+  }
+
+//   public List<OrderResponse> getUserOrders(Long userId) {
+//        List<Order> userOrders = orderRepository.findByUserId(userId);
+//        return userOrders.stream()
+//                .map(OrderResponse::new)
+//                .collect(Collectors.toList());
+//    }
+  public  OrderResponse getUserOrders( Long id){
+    Order order = orderRepository.findById(id).orElseThrow(
+        ()-> new IllegalArgumentException("존재하지 않는 주문 입니다.")
+    );
+      return new OrderResponse(order);
+
   }
   // 셀러 할일
   // 1. 아이템 등록, 아이템 삭제

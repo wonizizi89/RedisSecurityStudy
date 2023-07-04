@@ -1,9 +1,12 @@
 package study.wonyshop.order.controller;
 
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import study.wonyshop.order.dto.OrderRequest;
 import study.wonyshop.order.dto.OrderResponse;
+import study.wonyshop.order.entity.Order;
 import study.wonyshop.order.service.OrderService;
 import study.wonyshop.security.service.UserDetailsImpl;
 import study.wonyshop.user.entity.User;
@@ -37,6 +41,11 @@ public class OrderController {
   /**
    * 주문 조회
    */
+  @GetMapping("/{id}")
+  public OrderResponse getOrderList(@AuthenticationPrincipal UserDetailsImpl userDetails
+  ,@PathVariable Long id){
+    return orderService.getUserOrders(id);
+  }
 
   /**
    * 주문 전체 취소

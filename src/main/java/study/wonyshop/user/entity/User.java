@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -51,8 +52,9 @@ public class User extends TimeStamped {
   private UserRoleEnum role;
   @Column(nullable = false, unique = true)
   private String phoneNumber;
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
   private List<Order> orders = new ArrayList<>();
+  //todo  즉시로딩 필요함 -> 추후 변경하기 Lazy 로
 
   /**
    * 결제 수단은 포인트로 가능 ! 하다는 가정

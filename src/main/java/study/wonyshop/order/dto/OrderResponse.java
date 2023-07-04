@@ -22,7 +22,7 @@ public class OrderResponse extends TimeStamped {
   public OrderResponse(Order order) {
     this.orderId = order.getId();
     this.nickname = order.getUser().getNickname();
-    this.orderItems = order.getOrderItems().stream().map(o-> new OrderItemResponse(o.getItem(),o.getOrderPrice(),o.getCount())).collect(Collectors.toList());
+    this.orderItems = order.getOrderItems().stream().map(o-> new OrderItemResponse(o.getItem().getName(),o.getOrderPrice(),o.getCount())).collect(Collectors.toList());
     this.totalPrice = order.getTotalPrice();
     this.status = order.getStatus();
   }

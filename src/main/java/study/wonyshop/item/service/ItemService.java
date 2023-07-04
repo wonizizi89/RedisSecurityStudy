@@ -49,7 +49,7 @@ public class ItemService {
       String properties, String sellerNickname) {
     Page<Item> itemList = itemRepository.findAllBySellerNickname(
         PageRequest.of(page - 1, size, direction, properties), sellerNickname);
-    Page<ItemResponse> itemPageList = itemList.map(o -> new ItemResponse(o));
+    Page<ItemResponse> itemPageList = itemList.map(ItemResponse::new);
     return itemPageList;
   }
 
