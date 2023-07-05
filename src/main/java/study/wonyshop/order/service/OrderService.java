@@ -53,7 +53,16 @@ public class OrderService {
     //todo 주문하는 과정 : 결제 후 주문완료 처리 하고, 배송준비 설정
 
   }
+  /**
+   *  내 주문 조회 하기
+   */
+  public  OrderResponse getUserOrders( Long id){
+    Order order = orderRepository.findById(id).orElseThrow(
+        ()-> new IllegalArgumentException("존재하지 않는 주문 입니다.")
+    );
+    return new OrderResponse(order);
 
+  }
   /**
    * 주문 취소 : 주문 취소시 바로 환불
    */
@@ -70,27 +79,12 @@ public class OrderService {
     return ResponseEntity.ok("주문 취소 완료 ");
   }
 
-//   public List<OrderResponse> getUserOrders(Long userId) {
-//        List<Order> userOrders = orderRepository.findByUserId(userId);
-//        return userOrders.stream()
-//                .map(OrderResponse::new)
-//                .collect(Collectors.toList());
-//    }
-  public  OrderResponse getUserOrders( Long id){
-    Order order = orderRepository.findById(id).orElseThrow(
-        ()-> new IllegalArgumentException("존재하지 않는 주문 입니다.")
-    );
-      return new OrderResponse(order);
 
-  }
   // 셀러 할일
-  // 1. 아이템 등록, 아이템 삭제
   // 2.주문 대기 리스트 확인 ->  배송준비
   // 3. 배송이 완료 되면 배송 완료 처리 하기
 
 
-  /**
-   *  내 주문 조회 하기
-   */
+
 
 }
