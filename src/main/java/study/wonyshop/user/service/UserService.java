@@ -3,6 +3,7 @@ package study.wonyshop.user.service;
 import java.util.Optional;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
@@ -107,5 +108,13 @@ public class UserService {
     return UserResponse.of(findUser);
   }
 
+  public ResponseEntity earnPoint(Long id, int point) {
+    User user = userRepository.findById(id).orElseThrow(
+        () -> new CustomException(ExceptionStatus.WRONG_USER)
+    );
+   user.earnPoint(point);
+   userRepository.save(user);
+   return ResponseEntity.ok(point +"P 적립되었습니다. ");
+  }
 }
 

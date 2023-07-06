@@ -25,11 +25,14 @@ import study.wonyshop.security.dto.ReissueTokenRequest;
 import study.wonyshop.security.dto.TokenResponse;
 import study.wonyshop.security.jwt.JwtProvider;
 import study.wonyshop.security.service.UserDetailsImpl;
+import study.wonyshop.user.dto.EarnPointRequest;
 import study.wonyshop.user.dto.LoginRequest;
 import study.wonyshop.user.dto.SignUpRequest;
 import study.wonyshop.user.dto.UserResponse;
 import study.wonyshop.user.service.UserService;
-
+// 1. 유저 머니 충전하기( 추후 시간 될때)
+//2. 유저 머니 지불하기 ( 추후 시간될때)
+//3. 주문 조회 ( /api/orders 에 주문 관련 있음)
 /**
  * 상품전체조회 및 단건 조회 는 권한 허용하기 api/users/items
  */
@@ -117,8 +120,6 @@ public class UserController {
     //return userService.getUserInfo(userDetails.getUser().getEmail());
   }
 
-// 1. 유저 머니 충전하기
-  //2. 유저 머니 지불하기
 
   /**
    * 상품 전체 조회
@@ -149,7 +150,7 @@ public class UserController {
   }
 
   /**
-   * 검색 기능 조회 . 동적인 검색 기능 + 페이징 (QueryDsl 의 OrderSpecifier + page 이용 ) V2
+   * 상품 검색 기능 조회 . 동적인 검색 기능 + 페이징 (QueryDsl 의 OrderSpecifier + page 이용 ) V2
    * 검색조건 : name, priceGoe , priceLoe 3가지
    */
   @GetMapping("/items/search")
@@ -175,26 +176,16 @@ public class UserController {
     return itemService.searchItemByDynamicCond(page, size, itemOrderCond, itemSearchCond);
   }
 
-  /**
-   * 단순한 키워드 검색 , 동적쿼리 정렬 V1
-   * @param keyword
-   * @param page
-   * @param size
-   * @param direction
-   * @param properties
-   * @return
-   */
-//  @GetMapping("/items/search")
-//  public Page<ItemResponse> searchItemByDynamicCond(
-//      @RequestParam(value = "keyword", required = false) String keyword,
-//      @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-//      @RequestParam(value = "size", required = false, defaultValue = "5") int size,
-//      @RequestParam(value = "direction",required = false, defaultValue = "DESC") Direction direction,
-//      @RequestParam(value = "properties",required = false, defaultValue = "createdDate") String properties ){
-//    return itemService.searchItemByDynamicCond(keyword, page, size, direction,properties);
-//
-//  }
-
-
+/**
+ *  포인트 충전하기
+ *
+ *  포인트 얼마 적립 디티오로 받아오면 유저 객체 불러와서 저장하기
+ */
+@PostMapping("/points")
+  public ResponseEntity earnPoint(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    @RequestBody EarnPointRequest earnPointRequest){
+  int point = earnPointRequest.getPoint();
+  return userService.earnPoint(userDetails.getUser().getId(),point);
+}
 }
 

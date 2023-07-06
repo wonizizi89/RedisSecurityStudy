@@ -52,7 +52,8 @@ public class User extends TimeStamped {
   private UserRoleEnum role;
   @Column(nullable = false, unique = true)
   private String phoneNumber;
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)//,fetch = FetchType.EAGER
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//,fetch = FetchType.EAGER
   private List<Order> orders = new ArrayList<>();
   //todo  즉시로딩 필요함 -> 추후 변경하기 Lazy 로
 
@@ -92,6 +93,14 @@ public class User extends TimeStamped {
   }
 
   /**
+   * 포인트 충전 하기
+   */
+  public void earnPoint(int point){
+    this.point += point;
+  }
+
+
+  /**
    * 소비자가 -> 셀러 에게 지불
    *
    * @param totalPrice
@@ -106,6 +115,7 @@ public class User extends TimeStamped {
 
   /**
    * 셀러가 판매해서 받은 돈
+   *
    * @param totalPrice
    */
   public void receivePayment(int totalPrice) {
@@ -114,9 +124,10 @@ public class User extends TimeStamped {
 
   /**
    * 취소 시 환불
+   *
    * @param refundPayment
    */
-  public void refundPayment(int refundPayment){
+  public void refundPayment(int refundPayment) {
     this.point -= refundPayment;
   }
 

@@ -1,12 +1,10 @@
 package study.wonyshop.order.service;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +22,14 @@ import study.wonyshop.orderItem.OrderItem;
 import study.wonyshop.user.entity.User;
 import study.wonyshop.user.repository.UserRepository;
 
+/**
+ * 결제는 포인트 적립 후 포인트로 가능함
+ * 주문 시 결제 해야 함
+ *
+ *셀러가 주문 리스트 확인
+ * 오더 수락 과정
+ * 오더 취소 과정 필요함
+ */
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -42,12 +48,15 @@ public class OrderService {
         () -> new CustomException(ExceptionStatus.NOT_EXIST)
 
     );
+
+    String sellerNickname = findItem.getSellerNickname();
     //배송 생성
+
     Delivery delivery = new Delivery(user.getAddress(), DeliveryStatus.READY);
     // 주문상품 생성
     OrderItem orderItem = OrderItem.createOrderItem(findItem, findItem.getPrice(), quantity);
     // 주문생성
-    Order order = Order.createOrder(user, delivery, orderItem);
+    Order order = Order.createOrder(user, delivery,sellerNickname, orderItem);
     orderRepository.save(order);
     deliveryRepository.save(delivery);
     userRepository.save(user);
@@ -82,10 +91,16 @@ public class OrderService {
     return ResponseEntity.ok("주문 취소 완료 ");
   }
 
+  public Page<OrderResponse> getMyWaitingList(String sellerNickname,int page, int size, Direction direction, String properties) {
+    Page<Order> ordersPage = orderRepository.findAllBySellerNickname(
+        PageRequest.of(page - 1, size, direction, properties), sellerNickname);
+    Page<OrderResponse> pageResponse = ordersPage.map(OrderResponse::new);
+    return pageResponse;
+  }
 
-  // 셀러 할일
-  // 2.주문 대기 리스트 확인 ->  배송준비
-  // 3. 배송이 완료 되면 배송 완료 처리 하기
+  /**
+   * 셀러 주문 대기자 리스트 확인
+   */
 
 
 

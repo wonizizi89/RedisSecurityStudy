@@ -46,6 +46,9 @@ public class Order extends TimeStamped {
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<OrderItem> orderItems = new ArrayList<>();
 
+  @Column(nullable = false)
+  private String sellerNickname;
+
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "delivery_id")
   private Delivery delivery; //배송정보
@@ -63,6 +66,7 @@ public class Order extends TimeStamped {
     this.delivery = delivery;
     this.status = status;
     this.orderDate = orderDate;
+
   }
 
   //--- 양방향 연관관계 편의 메서드 ------// 편의메서드는 컨트롤 하는 쪽에 만들어주면 됨
@@ -97,17 +101,21 @@ public class Order extends TimeStamped {
     this.status = status;
 
   }
+  public void setSellerNickname(String sellerNickname){
+    this.sellerNickname = sellerNickname;
+  }
 
   //===== 생성 메서드 =====//
   //OrderItem... orderItems에서 ...은 가변 인자를 선언하는 부분입니다. 이는 OrderItem 타입의 인자를 0개 이상 받을 수 있다는 의미입니다.
   //Order order = createOrder(user, delivery, item1, item2);
-  public static Order createOrder(User user, Delivery delivery, OrderItem... orderItems) {
+  public static Order createOrder(User user, Delivery delivery,String sellerNickname,OrderItem... orderItems) {
     Order order = new Order();
     order.setUser(user);
     order.setDelivery(delivery);
     for (OrderItem orderItem : orderItems) {
       order.addOrderItem(orderItem);
     }
+    order.setSellerNickname(sellerNickname);
     order.setStatus(OrderStatus.ORDER);
     order.setOrderDate(LocalDateTime.now());
     return order;
