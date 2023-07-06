@@ -22,6 +22,7 @@ public class TimeStamped {
   @JsonSerialize(using = LocalDateTimeSerializer.class)
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+  @CreatedDate
   private LocalDateTime createdDate;
 
 
