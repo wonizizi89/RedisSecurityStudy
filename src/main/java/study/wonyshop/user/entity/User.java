@@ -52,7 +52,7 @@ public class User extends TimeStamped {
   private UserRoleEnum role;
   @Column(nullable = false, unique = true)
   private String phoneNumber;
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)//,fetch = FetchType.EAGER
   private List<Order> orders = new ArrayList<>();
   //todo  즉시로딩 필요함 -> 추후 변경하기 Lazy 로
 

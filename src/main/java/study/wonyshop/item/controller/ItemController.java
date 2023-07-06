@@ -23,7 +23,7 @@ import study.wonyshop.security.service.UserDetailsImpl;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/sellers")
+@RequestMapping("/api")
 public class ItemController {
 
   private final ItemService itemService;
@@ -31,23 +31,24 @@ public class ItemController {
   /**
    * 상품 등록
    */
-  @PostMapping("/items")
+  @PostMapping("/sellers/items")
   public ResponseEntity registerItem(@AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestBody ItemRequest request) {
     ItemResponse item = itemService.resisterItem(userDetails.getUser().getNickname(), request);
     return ResponseEntity.ok(item);
   }
   /**
-   * 판매자가 등록한 상품 전체 조회
+   * 판매자가 등록한 상품 전체 조회.
    */
-  @GetMapping("")
-  public Page<ItemResponse> getRegisteredItems(@AuthenticationPrincipal UserDetailsImpl userDetails,
+  @GetMapping("/sellers")
+  public Page<ItemResponse> getRegisteredItemList(@AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
       @RequestParam(value = "size", required = false, defaultValue = "5") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
-    return itemService.getRegisteredItems(page, size, direction, properties,userDetails.getUser().getNickname());
+    return itemService.getRegisteredItemList(page, size, direction, properties,userDetails.getUser().getNickname());
   }
+
 
   /**
    * 상품 수정 : 해당 판매자와 관리자 삭제 가능
@@ -56,7 +57,7 @@ public class ItemController {
    * @param id
    * @return
    */
-  @PutMapping("/{id}")
+  @PutMapping("/sellers/{id}")
 public ItemResponse updateItem(@AuthenticationPrincipal UserDetailsImpl userDetails,
     @RequestBody UpdateRequest request,
     @PathVariable Long id){

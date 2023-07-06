@@ -16,7 +16,7 @@ public class ItemResponse {
   //  private final List<Category> categories = new ArrayList<>();
   private  String image;
   private  String itemDetail;
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+
   private  LocalDateTime createdDate;
 
   public ItemResponse(Item item) {

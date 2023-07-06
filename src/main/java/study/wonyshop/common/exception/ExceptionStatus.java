@@ -12,6 +12,7 @@ public enum ExceptionStatus {
   DUPLICATED_PHONENUMBER(406, "이미 사용중인 휴대폰번호입니다."),
   SIGNUP_WRONG_USERNAME(409, "최소 4자 이상, 10자 이하이며, 영문과 숫자만 입력하세요."),
   WRONG_EMAIL(404, "이메일을 잘못 입력 하였거나 등록되지 않은 이메일 입니다."),
+  WRONG_USER(404,"존재하지 않는 사용자 입니다"),
 
   WRONG_PASSWORD(400, "잘못된 비밀번호 입니다."),
   AUTHENTICATION(500, "인증 실패"),

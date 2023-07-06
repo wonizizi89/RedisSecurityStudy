@@ -34,11 +34,14 @@ public class OrderService {
   private final DeliveryRepository deliveryRepository;
 
   @Transactional
-  public OrderResponse orderItem(User user, Long itemId, int quantity) {
+  public OrderResponse orderItem(Long userId, Long itemId, int quantity) {
+    User user = userRepository.findById(userId).orElseThrow(
+        ()-> new CustomException(ExceptionStatus.WRONG_USER)
+    );
     Item findItem = itemRepository.findById(itemId).orElseThrow(
         () -> new CustomException(ExceptionStatus.NOT_EXIST)
-    );
 
+    );
     //배송 생성
     Delivery delivery = new Delivery(user.getAddress(), DeliveryStatus.READY);
     // 주문상품 생성
