@@ -1,6 +1,9 @@
 package study.wonyshop.order.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.convert.PeriodUnit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,9 +36,7 @@ public class OrderController {
   private final OrderService orderService;
 
   /**
-   * 상품 주문
-   * <p>
-   * 추후 비회원도 만든다면.  비회원일때는??? 유저정보를 다 넣는 dto가 있어야 겠지 .
+   * 상품 주문 추후 비회원도 만든다면.  비회원일때는??? 유저정보를 다 넣는 dto가 있어야 겠지 .
    */
   @PostMapping("")
   public OrderResponse orderItem(@AuthenticationPrincipal UserDetailsImpl userDetails
@@ -55,13 +57,12 @@ public class OrderController {
   }
 
   /**
-   * 주문 전체 취소
+   * 주문 전체 취소 시 바로 환불처리 하게 함
    */
   @DeleteMapping("/{id}/users")
-  public ResponseEntity cancelOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
+  public ResponseEntity applyForCancelOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
       @PathVariable Long id) {
-    User user = userDetails.getUser();
-    return orderService.cancelOrder(user, id);
+    return orderService.cancelOrder(userDetails.getUser().getId(), id);
   }
 
 
@@ -73,8 +74,36 @@ public class OrderController {
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
       @RequestParam(value = "size", required = false, defaultValue = "5") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
-      @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties){
-      return orderService.getMyWaitingList(userDetails.getUser().getNickname(),page,size,direction,properties);
-    }
-
+      @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
+    return orderService.getMyWaitingList(userDetails.getUser().getNickname(), page, size, direction,
+        properties);
   }
+
+  /**
+   * seller 주문 오더수락 처리 과정 주문처리과정 주문 디비 조회 가져와 (셀러닉네임) 각 주문에 있는 주문 상태를 order-> order_ accept 배송 상태
+   * 변경하기  DELEVERYSTATUS.READY
+   */
+
+  @PutMapping("/sellers/order-accept/{id}")
+  public ResponseEntity orderCompletionProcessing(
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @PathVariable("id") Long orderId) {
+    return orderService.orderCompletionProcessing(userDetails.getUser().getNickname(), orderId);
+  }
+
+
+  /**
+   * seller 배송 완료 처리 과정
+   */
+  @PutMapping("/sellers/delivery-processing/{id}")
+  public ResponseEntity deliveryProcessing(@AuthenticationPrincipal UserDetailsImpl userDetails,
+      @PathVariable("id") Long orderId) {
+    return orderService.deliveryProcessing(userDetails.getUser().getNickname(), orderId);
+  }
+
+  /**
+   * SOFT DELETE
+   *
+   */
+
+}

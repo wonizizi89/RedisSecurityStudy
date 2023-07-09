@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum OrderStatus {
   ORDER,
-  ORDER_READY,
+  ORDER_ACCEPT,
   CANCEL
 
 }

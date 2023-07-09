@@ -1,5 +1,6 @@
 package study.wonyshop.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 import study.wonyshop.common.TimeStamped;
 import study.wonyshop.delivery.Delivery;
 import study.wonyshop.delivery.DeliveryStatus;
@@ -29,9 +31,10 @@ import study.wonyshop.orderItem.OrderItem;
 import study.wonyshop.user.entity.User;
 
 @Entity
-@Table(name = "ORDERS")
+@Table(name = "orders")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE orders SET deleted = true WHERE order_id = ? ") // 딜리트 쿼리 발생시 딜리트 대신 수행 sql
 public class Order extends TimeStamped {
 
   @Id
@@ -56,16 +59,17 @@ public class Order extends TimeStamped {
   @Enumerated(EnumType.STRING)
   private OrderStatus status; //ORDER, CANCEL
 
-
+  private Boolean deleted = false ;// 데이터 삭제 여부
   private LocalDateTime orderDate;// 주문 날짜
 
 
   @Builder
-  public Order(User user, Delivery delivery, OrderStatus status, LocalDateTime orderDate) {
+  public Order(User user, Delivery delivery, OrderStatus status, LocalDateTime orderDate, Boolean deleted) {
     this.user = user;
     this.delivery = delivery;
     this.status = status;
     this.orderDate = orderDate;
+    this.deleted = deleted;
 
   }
 
@@ -101,14 +105,16 @@ public class Order extends TimeStamped {
     this.status = status;
 
   }
-  public void setSellerNickname(String sellerNickname){
+
+  public void setSellerNickname(String sellerNickname) {
     this.sellerNickname = sellerNickname;
   }
 
   //===== 생성 메서드 =====//
   //OrderItem... orderItems에서 ...은 가변 인자를 선언하는 부분입니다. 이는 OrderItem 타입의 인자를 0개 이상 받을 수 있다는 의미입니다.
   //Order order = createOrder(user, delivery, item1, item2);
-  public static Order createOrder(User user, Delivery delivery,String sellerNickname,OrderItem... orderItems) {
+  public static Order createOrder(User user, Delivery delivery, String sellerNickname,
+      OrderItem... orderItems) {
     Order order = new Order();
     order.setUser(user);
     order.setDelivery(delivery);
@@ -120,28 +126,31 @@ public class Order extends TimeStamped {
     order.setOrderDate(LocalDateTime.now());
     return order;
   }
- //---  비지니스 로직 -------//
+  //---  비지니스 로직 -------//
+
   /**
    * 주문취소
    */
 
-  public void cancel(){
-    if(delivery.getDeliveryStatus() == DeliveryStatus.COMP ) {
+  public void cancel() {
+    if (delivery.getDeliveryStatus() == DeliveryStatus.COMP) {
       throw new IllegalStateException(" 이미 배송이 완료된 상품은 취소가 불가능 합니다. "); //Non-cancellable product
     }
     this.setStatus(OrderStatus.CANCEL);
     // 주문 상품을 다 취소 시켜야함
-    for(OrderItem orderItem : orderItems){
+    for (OrderItem orderItem : orderItems) {
       orderItem.cancel();
     }
   }
+
   //=== 조회 로직 =====//
+
   /**
    * 전체 주문 가격 조회
    */
-  public int getTotalPrice(){
+  public int getTotalPrice() {
     int totalPrice = 0;
-    for(OrderItem orderItem :orderItems){
+    for (OrderItem orderItem : orderItems) {
       totalPrice += orderItem.getTotalPrice();
     }
     return totalPrice;

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
  */
 
 @Embeddable
+@Getter
 public class Address {
   private String city;
   private String street;

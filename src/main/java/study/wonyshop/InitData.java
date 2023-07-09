@@ -31,10 +31,10 @@ public class InitData implements ApplicationRunner {
 
     User customer = new User("customer123@naver.com", "customer",
         passwordEncoder.encode("customer1234"), new Address("대전", "계룡로", "123"), "default.png",
-        UserRoleEnum.MEMBER, "01022223333", 0);
+        UserRoleEnum.MEMBER, "01022223333", 100000);
     User customer1 = new User("customer1123@naver.com", "customer1",
         passwordEncoder.encode("customer11234"), new Address("대전", "계룡로", "123"), "default.png",
-        UserRoleEnum.MEMBER, "01011113333");
+        UserRoleEnum.MEMBER, "01011113333",200000);
     User seller = new User("rupi1234@naver.com", "뽀로로", passwordEncoder.encode("rupi1234"),
         new Address("대전", "계룡로", "123"), "default.png",
         UserRoleEnum.SELLER, "01033334444");

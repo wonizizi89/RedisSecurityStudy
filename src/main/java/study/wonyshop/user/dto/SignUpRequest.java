@@ -34,7 +34,14 @@ public class SignUpRequest {
   private final String phoneNumber;
 
   @NotBlank
-  private final Address address;
+  private final String city;
+
+  @NotBlank
+  private final String street;
+
+  @NotBlank
+  private final String zipcode;
+
 
 //  private boolean admin = false;
 //
@@ -42,13 +49,15 @@ public class SignUpRequest {
 
   @Builder
   public SignUpRequest(String email, String nickName, String password, String password2,
-      String phoneNumber, Address address) {
+      String phoneNumber, String city, String street, String zipcode) {
     this.email = email;
     this.nickName = nickName;
     this.password = password;
     this.password2 = password2;
     this.phoneNumber = phoneNumber;
-    this.address = address;
+    this.city = city;
+    this.street = street;
+    this.zipcode = zipcode;
   }
 
   /**
@@ -63,7 +72,7 @@ public class SignUpRequest {
         .email(email)
         .phoneNumber(phoneNumber)
         .password(encodedPassword)
-        .address(address)
+        .address(new Address(city,street,zipcode))
         .role(role)
         .build();
   }

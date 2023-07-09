@@ -14,9 +14,11 @@ import study.wonyshop.user.entity.User;
 
 public interface OrderRepository extends JpaRepository<Order,Long> {
 
-  Optional<Order> findByIdAndUser(Long id, User user);
+  Optional<Order> findByIdAndUserId(Long id, Long userId);
 
 
   Page<Order> findAllBySellerNickname(PageRequest of, String sellerNickname);
+
+  Optional<Order> findBySellerNicknameAndId(String sellerNickname, @Param("id")Long orderId);
 
 }

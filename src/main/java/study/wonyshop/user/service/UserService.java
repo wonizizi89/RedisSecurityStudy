@@ -45,7 +45,7 @@ public class UserService {
     String nickname = signUpRequest.getNickName();
     String password = passwordEncoder.encode(signUpRequest.getPassword());
     String phoneNumber = signUpRequest.getPhoneNumber();
-    Address address = signUpRequest.getAddress();
+
 
     //닉네임 중복 확인
     Optional<User> findNickname = userRepository.findByNickname(nickname);
@@ -102,8 +102,8 @@ public class UserService {
   }
 
 
-  public UserResponse getUserInfo(String email) {
-    User findUser = userRepository.findByEmail(email).orElseThrow(
+  public UserResponse getUserInfo(Long id) {
+    User findUser = userRepository.findById(id).orElseThrow(
         () -> new IllegalArgumentException("없음 "));
     return UserResponse.of(findUser);
   }

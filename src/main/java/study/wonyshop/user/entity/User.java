@@ -1,6 +1,7 @@
 package study.wonyshop.user.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -52,6 +53,8 @@ public class User extends TimeStamped {
   private UserRoleEnum role;
   @Column(nullable = false, unique = true)
   private String phoneNumber;
+
+
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //,fetch = FetchType.EAGER
   private List<Order> orders = new ArrayList<>();
@@ -114,7 +117,8 @@ public class User extends TimeStamped {
   }
 
   /**
-   * 셀러가 판매해서 받은 돈
+   * 셀러가 판매해서 돈을 받는 것과
+   * 환불시 고객이 돈을 받는 메서드
    *
    * @param totalPrice
    */

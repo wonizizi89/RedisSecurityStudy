@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import study.wonyshop.order.dto.OrderResponse;
+import study.wonyshop.order.entity.Order;
 import study.wonyshop.redis.CacheNames;
 import study.wonyshop.user.entity.User;
 
@@ -21,6 +22,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
   Optional<User> findByEmail(String email);
 
   Optional<User> findByPhoneNumber(String phoneNumber);
+
 
 }
 ///**

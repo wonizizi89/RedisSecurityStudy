@@ -116,7 +116,7 @@ public class UserController {
    */
   @GetMapping("/user-info")
   public UserResponse getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return userService.getUserInfo(userDetails.getUsername());
+    return userService.getUserInfo(userDetails.getUser().getId());
     //return userService.getUserInfo(userDetails.getUser().getEmail());
   }
 

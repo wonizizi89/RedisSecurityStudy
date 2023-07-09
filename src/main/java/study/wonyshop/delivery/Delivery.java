@@ -49,6 +49,11 @@ public class Delivery extends TimeStamped {
     this.order = order;
   }
 
+  public void changeStatus(DeliveryStatus status){
+    this.deliveryStatus = status;
+  }
+
+
 //  public void setAddress(String address) {
 //    this.address = address;
 //  }

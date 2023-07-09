@@ -18,6 +18,7 @@ public class OrderResponse extends TimeStamped {
 
   private final int totalPrice; // 총 금액
   private final OrderStatus status; // 주문 상태
+  private final Boolean deleted ;
 
   public OrderResponse(Order order) {
     this.orderId = order.getId();
@@ -25,5 +26,6 @@ public class OrderResponse extends TimeStamped {
     this.orderItems = order.getOrderItems().stream().map(o-> new OrderItemResponse(o.getItem().getName(),o.getOrderPrice(),o.getCount())).collect(Collectors.toList());
     this.totalPrice = order.getTotalPrice();
     this.status = order.getStatus();
+    this.deleted = order.getDeleted();
   }
 }
